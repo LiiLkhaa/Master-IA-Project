@@ -77,8 +77,10 @@ class Lubm  (val dbSource: String){
     val lname = faker.name().lastName()
     val birthdate = faker.date().birthday(30, 70)
     val gender = generate_gender()
+    val zipcode = faker.address().zipCode()
+    val state = faker.address().state()
     val vaccin = generate_vaccin()
-    (fname, lname,birthdate,gender,vaccin)
+    (id,fname, lname,birthdate,gender,zipcode, state)
   }
 
   def addInfoToProfs()={
@@ -86,29 +88,42 @@ class Lubm  (val dbSource: String){
     profs.forEach(prof => {
       val info = generateInfo()
       val subject =  prof
+      val propertyId = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#id")
       val propertyFname = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#firstName")
       val propertyLname = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#lastName")
       val propertybirthdate = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#birthdate")
       val propertygender = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#gender")
-      val objectFname = ResourceFactory.createStringLiteral(info._1)
-      val objectLname = ResourceFactory.createStringLiteral(info._2)
-      val objectbirthdate =ResourceFactory.createStringLiteral(info._3.toString)
-      val objectgender =ResourceFactory.createStringLiteral(info._4.toString)
+      val propertyzipcode = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#zipcode")
+      val propertystate = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#state")
+      val objectId = ResourceFactory.createStringLiteral(info._1)
+      val objectFname = ResourceFactory.createStringLiteral(info._2)
+      val objectLname = ResourceFactory.createStringLiteral(info._3)
+      val objectbirthdate =ResourceFactory.createStringLiteral(info._4.toString)
+      val objectgender =ResourceFactory.createStringLiteral(info._5.toString)
+      val objectzip =ResourceFactory.createStringLiteral(info._6)
+      val objectstate =ResourceFactory.createStringLiteral(info._7)
+      val idStmt = ResourceFactory.createStatement(subject, propertyId, objectId)
       val fnameStmt = ResourceFactory.createStatement(subject, propertyFname, objectFname)
       val lnameStmt = ResourceFactory.createStatement(subject, propertyLname, objectLname)
       val birthdateStmt = ResourceFactory.createStatement(subject, propertybirthdate, objectbirthdate)
       val genderStmt = ResourceFactory.createStatement(subject, propertygender, objectgender)
+      val zipStmt = ResourceFactory.createStatement(subject, propertyzipcode, objectzip)
+      val stateStmt = ResourceFactory.createStatement(subject, propertystate, objectstate)
+      model.add(idStmt)
       model.add(fnameStmt)
       model.add(lnameStmt)
       model.add(birthdateStmt)
       model.add(genderStmt)
+      model.add(zipStmt)
+      model.add(stateStmt)
     })
 
   }
   def gen()={
     System.out.println(model.supportsSetOperations())
     System.out.println(model.supportsTransactions())
-    val out = new FileOutputStream(new File("C:\\imad\\M2\\IntelligenceA\\Master-IA-Project\\src\\main\\resources\\out.xml"))
+    //val out = new FileOutputStream(new File("C:\\imad\\M2\\IntelligenceA\\Master-IA-Project\\src\\main\\resources\\out.xml"))
+    val out = new FileOutputStream(new File("src/main/resources/out.xml"))
     model.write(out,null)
     out.close
   }
