@@ -1,0 +1,27 @@
+SELECT (COUNT(*) as ?Triples) WHERE { ?s ?p ?o}
+
+1-
+SELECT (COUNT(DISTINCT ?instance) AS ?count) WHERE {
+?s j.0::Name ?o
+}
+
+SELECT (COUNT(DISTINCT ?instance) AS ?count) WHERE {
+   ?s j.0::<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Name>
+    ?o
+   }
+
+
+2- SELECT ?subject
+   WHERE { ?subject isPerson <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Pfizer> } LIMIT 100
+
+   SELECT ?subject
+   WHERE { ?subject isPerson <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Moderna> } LIMIT 100
+
+   SELECT ?subject
+   WHERE { ?subject isPerson <http://swat.cse.lehigh.edu/onto/univ-bench.owl#AstraZeneca> } LIMIT 100
+
+   SELECT ?subject
+   WHERE { ?subject isPerson <http://swat.cse.lehigh.edu/onto/univ-bench.owl#SpoutnikV> } LIMIT 100
+
+   SELECT ?subject
+   WHERE { ?subject isPerson <http://swat.cse.lehigh.edu/onto/univ-bench.owl#CaSinoBio> } LIMIT 100

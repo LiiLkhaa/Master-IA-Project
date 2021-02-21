@@ -80,7 +80,7 @@ class Lubm  (val dbSource: String){
     val zipcode = faker.address().zipCode()
     val state = faker.address().state()
     val vaccin = generate_vaccin()
-    (id,fname, lname,birthdate,gender,zipcode, state)
+    (id,fname, lname,birthdate,gender,zipcode, state, vaccin)
   }
 
   def addInfoToProfs()={
@@ -95,6 +95,7 @@ class Lubm  (val dbSource: String){
       val propertygender = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#gender")
       val propertyzipcode = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#zipcode")
       val propertystate = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#state")
+      val propertyvaccin = ResourceFactory.createProperty("http://swat.cse.lehigh.edu/onto/univ-bench.owl#vaccin")
       val objectId = ResourceFactory.createStringLiteral(info._1)
       val objectFname = ResourceFactory.createStringLiteral(info._2)
       val objectLname = ResourceFactory.createStringLiteral(info._3)
@@ -102,6 +103,7 @@ class Lubm  (val dbSource: String){
       val objectgender =ResourceFactory.createStringLiteral(info._5.toString)
       val objectzip =ResourceFactory.createStringLiteral(info._6)
       val objectstate =ResourceFactory.createStringLiteral(info._7)
+      val objectvaccin =ResourceFactory.createStringLiteral(info._8.toString)
       val idStmt = ResourceFactory.createStatement(subject, propertyId, objectId)
       val fnameStmt = ResourceFactory.createStatement(subject, propertyFname, objectFname)
       val lnameStmt = ResourceFactory.createStatement(subject, propertyLname, objectLname)
@@ -109,6 +111,7 @@ class Lubm  (val dbSource: String){
       val genderStmt = ResourceFactory.createStatement(subject, propertygender, objectgender)
       val zipStmt = ResourceFactory.createStatement(subject, propertyzipcode, objectzip)
       val stateStmt = ResourceFactory.createStatement(subject, propertystate, objectstate)
+      val statevaccin = ResourceFactory.createStatement(subject, propertyvaccin, objectvaccin)
       model.add(idStmt)
       model.add(fnameStmt)
       model.add(lnameStmt)
@@ -116,12 +119,14 @@ class Lubm  (val dbSource: String){
       model.add(genderStmt)
       model.add(zipStmt)
       model.add(stateStmt)
+      model.add(statevaccin)
     })
-
   }
+
+
   def gen()={
-    System.out.println(model.supportsSetOperations())
-    System.out.println(model.supportsTransactions())
+    //System.out.println(model.supportsSetOperations())
+    //System.out.println(model.supportsTransactions())
     //val out = new FileOutputStream(new File("C:\\imad\\M2\\IntelligenceA\\Master-IA-Project\\src\\main\\resources\\out.xml"))
     val out = new FileOutputStream(new File("src/main/resources/out.xml"))
     model.write(out,null)
