@@ -1,11 +1,12 @@
 package fr.uge.ia
 
 import com.github.javafaker.Faker
-
 import org.apache.jena.rdf.model.{ModelFactory, ResourceFactory}
-
-import java.io.{File, FileOutputStream}
+import java.io.{File, FileOutputStream, StringWriter}
 import java.util.Random
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 
 
@@ -80,7 +81,7 @@ class Lubm  (val dbSource: String){
     val zipcode = faker.address().zipCode()
     val state = faker.address().state()
     val vaccin = generate_vaccin()
-    (id,fname, lname,birthdate,gender,zipcode, state, vaccin)
+    (id,fname, lname,birthdate.toString,gender.toString,zipcode, state, vaccin.toString)
   }
 
   def addInfoToProfs()={
@@ -121,6 +122,16 @@ class Lubm  (val dbSource: String){
       model.add(stateStmt)
       model.add(statevaccin)
     })
+  }
+
+  def toJson() ={
+    val mapper = new ObjectMapper()
+    mapper.registerModule(DefaultScalaModule)
+
+    val out = new StringWriter()
+    mapper.writeValue(new File("src/main/resources/test.json"), generateInfo())
+    val json = out.toString()
+    System.out.println(json)
   }
 
 

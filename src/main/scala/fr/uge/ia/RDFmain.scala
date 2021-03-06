@@ -11,6 +11,7 @@ object RDFmain extends App {
   db.generate_vaccin()
   db.generateInfo()
   db.addInfoToProfs()
+  db.toJson()
   db.gen()
   //db.showModel()
 
